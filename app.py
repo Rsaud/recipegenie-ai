@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["https://recipe-geni.com"])
+CORS(app, origins=["https://recipe-geni.com", "https://recipegenie-ai-2.onrender.com"])
 
 # Configure Gemini API
 genai.configure(api_key=os.environ.get("API_KEY"))
