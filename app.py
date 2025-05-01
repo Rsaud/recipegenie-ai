@@ -3,11 +3,13 @@ import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
 import faiss
+from flask_cors import CORS
 import google.generativeai as genai
 import os
 
 # Initialize app
 app = Flask(__name__, static_folder='static', template_folder='templates')
+CORS(app)
 
 
 from dotenv import load_dotenv
@@ -104,6 +106,10 @@ def generate_recipe(user_ingredients, user_lang="ar", top_k=3):
 @app.route('/')
 def home():
     return render_template('index.html')
+@app.route("/ai-generator")
+def ai_generator():
+    return render_template("ai-generator.html")
+
 
 @app.route("/chat", methods=["POST"])
 def chat():
