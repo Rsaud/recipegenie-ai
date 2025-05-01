@@ -9,6 +9,9 @@ import os
 # Initialize app
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
+
+from dotenv import load_dotenv
+load_dotenv()
 # Configure Gemini API
 os.environ["API_KEY"] = 'AIzaSyDie47yNvkl8VdC1xR48joUkb9gZ9Tag6M'
 genai.configure(api_key=os.environ["API_KEY"])
