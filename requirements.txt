@@ -9,5 +9,6 @@ sentence-transformers==2.2.2
 huggingface_hub==0.10.1
 faiss-cpu==1.7.4
 google-generativeai
+openpyxl==3.1.2
 
 
