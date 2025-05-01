@@ -6,14 +6,13 @@ import faiss
 from flask_cors import CORS
 import google.generativeai as genai
 import os
-
-# Initialize app
-app = Flask(__name__, static_folder='static', template_folder='templates')
-CORS(app)
-
-
 from dotenv import load_dotenv
+
 load_dotenv()
+
+app = Flask(__name__)
+CORS(app, origins=["https://recipe-geni.com"])
+
 # Configure Gemini API
 genai.configure(api_key=os.environ.get("API_KEY"))
 
