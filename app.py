@@ -107,7 +107,7 @@ def home():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    user_message = request.form.get("message", "")
+    user_message = request.json.get("message", "")
     if not user_message:
         return jsonify({"error": "No message provided."})
 
