@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Recipe Generator - RecipeGenie</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="assets/js/chatbot.js" defer></script>
+</head>
+<body>
+  <header>
+      <div class="logo-container">
+        <img src="images/logo.png" class="logo" />
+        <span class="logo-text">RecipeGenie</span>
+      </div>
+      
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="ai-generator">AI Recipe Generator</a>
+      <a href="recipes.html">Recipes</a>
+      <a href="about.html">About Us</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="#" id="login-btn">Login</a>
+    </nav>
+  </header>
+
+  <main style="padding: 50px 20px; display: flex; justify-content: center;">
+    <div style="width: 100%; max-width: 600px; background: #ffffffcc; border-radius: 16px; box-shadow: 0 0 12px rgba(0,0,0,0.1); padding: 20px;">
+      <h2 style="text-align: center; margin-bottom: 15px;">Ask RecipeGenie</h2>
+      
+      <div id="chat-window" style="height: 300px; overflow-y: auto; padding: 10px; background: #f7f7f7; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px;">
+        <!-- Messages will appear here -->
+      </div>
+  
+      <div style="display: flex;">
+        <input id="userInput" type="text" placeholder="Type your recipe request..." style="flex: 1; padding: 10px; border-radius: 8px 0 0 8px; border: 1px solid #ccc; border-right: none;" />
+        <button onclick="sendMessage()" style="padding: 10px 20px; background-color: #f15b2a; color: #fff; border: none; border-radius: 0 8px 8px 0; cursor: pointer;">Send</button>
+      </div>
+    </div>
+  </main>
+  
+  
+  
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
+  
+      const chatWindow = document.getElementById("chat-window");
+  
+      // Show user message
+      const userMsg = document.createElement("div");
+      userMsg.style.cssText = "text-align: right; margin: 8px 0;";
+      userMsg.innerHTML = `<span style="background:#f15b2a; color:white; padding:8px 12px; border-radius:12px 12px 0 12px; display:inline-block;">${message}</span>`;
+      chatWindow.appendChild(userMsg);
+  
+      input.value = "";
+  
+      // Typing bubble
+      const typing = document.createElement("div");
+      typing.style.cssText = "text-align: left; margin: 8px 0;";
+      typing.innerHTML = `<span style="background:#eee; color:#333; padding:8px 12px; border-radius:12px 12px 12px 0; display:inline-block;">Typing...</span>`;
+      chatWindow.appendChild(typing);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+  
+      try {
+        const response = await fetch("https://recipegenie-ai-1.onrender.com/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+        typing.innerHTML = `<span style="background:#eee; color:#333; padding:8px 12px; border-radius:12px 12px 12px 0; display:inline-block;">
+  ${(data.recipes && data.recipes[0].instructions) || "No reply."}
+</span>`;
+
+      } catch (err) {
+       typing.innerHTML = `<span style="background:#eee; color:red; padding:8px 12px; border-radius:12px 12px 12px 0; display:inline-block;">Error connecting to AI.</span>`;
+              }
+    
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+    </script>  
+      
+    
+    </body>
+  </html>
+  
