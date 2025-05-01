@@ -13,6 +13,7 @@ app = Flask(__name__, static_folder='static', template_folder='templates')
 os.environ["API_KEY"] = 'AIzaSyDie47yNvkl8VdC1xR48joUkb9gZ9Tag6M'
 genai.configure(api_key=os.environ["API_KEY"])
 
+
 # Load dataset
 df = pd.read_excel('final_food_rec_with_type.xlsx')
 documents = []
