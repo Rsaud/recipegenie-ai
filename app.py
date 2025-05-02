@@ -100,7 +100,7 @@ def generate_recipe(user_ingredients, user_lang="ar", top_k=3):
     {instruction_language}
     """
     
-response = model_ai.generate_content(prompt)
+    response = model_ai.generate_content(prompt)
     return response.text.strip()
 
 
@@ -188,9 +188,6 @@ def chat():
                 "instructions": fallback_error
             }]
         })
-
-if __name__ == "__main__":
-    import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
