@@ -7,6 +7,8 @@ from flask_cors import CORS
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
+import concurrent.futures
+
 
 load_dotenv()
 
@@ -15,8 +17,6 @@ CORS(app, origins=["https://recipe-geni.com", "https://recipegenie-ai-2.onrender
 
 # Configure Gemini API
 genai.configure(api_key=os.environ.get("API_KEY"))
-
-model_ai = genai.GenerativeModel('gemini-1.5-flash-latest')
 
 
 # Load dataset
@@ -81,6 +81,7 @@ def is_food_related(user_message):
 
 # Recipe generation
 def generate_recipe(user_ingredients, user_lang="ar", top_k=3):
+    model_ai = genai.GenerativeModel('gemini-1.5-flash-latest')
     query_embedding = model.encode([user_ingredients])
     D, indices = index.search(query_embedding, top_k)
     retrieved_recipes = [documents[i] for i in indices[0]]
@@ -100,9 +101,21 @@ def generate_recipe(user_ingredients, user_lang="ar", top_k=3):
     {instruction_language}
     """
 
+    try:
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future = executor.submit(model_ai.generate_content, prompt)
+            response = future.result(timeout=20)  # Timeout in 20 seconds
+            return response.text.strip()
+    except concurrent.futures.TimeoutError:
+        return "❌ Gemini API timed out. Try again."
+    except Exception as e:
+        print("🔴 Gemini call failed:", str(e))
+        return "❌ Unexpected error occurred."
+
+
     
-    response = model_ai.generate_content(prompt)
-    return response.text.strip()
+    # response = model_ai.generate_content(prompt)
+    # return response.text.strip()
 
 
 # Routes
