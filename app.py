@@ -16,6 +16,8 @@ CORS(app, origins=["https://recipe-geni.com", "https://recipegenie-ai-2.onrender
 # Configure Gemini API
 genai.configure(api_key=os.environ.get("API_KEY"))
 
+model_ai = genai.GenerativeModel('gemini-1.5-flash-latest')
+
 
 # Load dataset
 df = pd.read_excel('final_food_rec_with_type.xlsx')
@@ -97,7 +99,7 @@ def generate_recipe(user_ingredients, user_lang="ar", top_k=3):
 
     {instruction_language}
     """
-    model_ai = genai.GenerativeModel('gemini-1.5-flash-latest')
+    
 response = model_ai.generate_content(prompt)
     return response.text.strip()
 
