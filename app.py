@@ -75,6 +75,7 @@ def is_food_related(user_message):
         if food_word in user_message:
             return True
     return False
+model_ai = genai.GenerativeModel('gemini-1.5-flash-latest')
 
 # Recipe generation
 def generate_recipe(user_ingredients, user_lang="ar", top_k=3):
@@ -96,8 +97,7 @@ def generate_recipe(user_ingredients, user_lang="ar", top_k=3):
 
     {instruction_language}
     """
-
-    model_ai = genai.GenerativeModel('gemini-1.5-flash-latest')
+    
     response = model_ai.generate_content(prompt)
     return response.text.strip()
 
