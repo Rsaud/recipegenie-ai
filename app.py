@@ -100,10 +100,9 @@ def generate_recipe(user_ingredients, user_lang="ar", top_k=3):
     {instruction_language}
     """
 
-    return f"This is a test response for: {user_ingredients}"
     
-    # response = model_ai.generate_content(prompt)
-    # return response.text.strip()
+    response = model_ai.generate_content(prompt)
+    return response.text.strip()
 
 
 # Routes
